@@ -15,14 +15,23 @@ A Locally Weighted Regression is an extension of a Linear Regression, so we must
 
 Where *x* are the features, *y* is the dependent variable, and *beta* is a matrix of the weights. The goal is to find the weights that optimize this equation and minimize the amount of error. In the studies presented below, I used mean squared error to measure the effectiveness of the weight parameters.
 
-In a Locally Weighted Regression, instead of calculating one line of best fit for the entire dataset it builds the model by fitting smaller lines locally and then connecting them all together to create the final model. The difference between a typical OLS method in Linear Regression and a Locally Weighted Regression is that only local points contribute to the estimation of weights. Scikit-learn provides a good animation of how Locally Weighted Regression works. For given *x* values, the points in yellow are the only points being considered when determinging these weights. As you can see only the local points contribute to the weights, but in the end they can be combined to construct the weights for the entire model.  
+In a Locally Weighted Regression, instead of calculating one line of best fit for the entire dataset it builds the model by fitting smaller lines locally and then connecting them all together to create the final model. The difference between a typical OLS method in Linear Regression and a Locally Weighted Regression is that only local points contribute to the estimation of weights. Scikit-learn provides a good animation of how Locally Weighted Regression works. For given *x* values, the points in yellow are the only points being considered when determinging these weights. As you can see only the local points contribute to the weights, but in the end they can be combined to construct the weights for the entire model.
 
-![](lowess-rolling.gif)
+
+<p align="center">
+  <img src="lowess-rolling.gif"/>
+</p>
 
 By building the weights and line of best fit locally, the line of best fit has more freedom to adjust to local changes in the data. This can lead to more accurate predictions as the model can adjust to changes throughout the data more effectively, but can also lead to problems when the data is extremely noisy because the Locally Weighted Regression may start modelling the local noise instead of the actual relationship. 
 
 ### Random Forest
-A Random Forest is just a collection of *n* Decision trees, so to understand how a Random Forest works you must understand how Decision Trees work. 
+A Random Forest is just a collection of *n* Decision trees, so to understand how a Random Forest works you must understand how Decision Trees work. I find the best way to think of Decision Trees is as a flowchart. Data is separated into containers using a series of conditionals, and each container (leaf node) has a prediction value associated with it. When making predictions, data is passed through the series of conditionals to determine what the predicted value will be. An extremely simple example from [Medium](https://chirag-sehra.medium.com/decision-trees-explained-easily-28f23241248) is shown below. If someone is over 30 years old and exercises in the morning they would be considered fit, while someone under the age of 30 who eats pizza would be considered unfit. 
+
+<p align="center">
+  <img src="DecisionTree.png"/>
+</p>
+
+As stated above, a Random Forest is just a collection of Decision Trees. That means a Random Forest with *n_estimators = 100* will be made up of 100 Decision Trees. For predictions, data is passed throuh all 100 Decision Trees and the predictions from these Decision Trees are stored. If it is a classification problem, whichever class was most common will be output from the Random Forest, and if it is a regression problem, the results will be averaged together. Random Forest has the benefit of not using distances to calculate any parameters in the model, so it is likely less affected by noise compared to the Locally Weighted Regression. 
 
 ## Cars Dataset
 
