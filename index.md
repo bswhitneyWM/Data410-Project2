@@ -18,4 +18,7 @@
 
 ## Random Forest
 
-## Conclusion
+## Conclusion 
+
+# Discussion
+- Maybe Lcoally weighted regression is more sensitive to noise
