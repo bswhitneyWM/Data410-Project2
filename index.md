@@ -6,6 +6,21 @@ This page explores the similarities and differences of Locally Weighted Linear R
 
 ### Locally Weighted Regression
 
+A Locally Weighted Regression is an extension of a Linear Regression, so we must first understand the big ideas behind Linear Regressions. At the base level, a Linear Regression is trying to solve the following equation:
+
+<p align="center">
+<img src="https://render.githubusercontent.com/render/math?math=\large y = (X\cdot\beta)  (\sigma\epsilon)">
+</p>
+
+
+Where *x* are the features, *y* is the dependent variable, and *beta* is a matrix of the weights. The goal is to find the weights that optimize this equation and minimize the amount of error. In the studies presented below, I used mean squared error to measure the effectiveness of the weight parameters.
+
+In a Locally Weighted Regression, instead of calculating one line of best fit for the entire dataset it builds the model by fitting smaller lines locally and then connecting them all together to create the final model. The difference between a typical OLS method in Linear Regression and a Locally Weighted Regression is that only local points contribute to the estimation of weights. Scikit-learn provides a good animation of how Locally Weighted Regression works. For given *x* values, the points in yellow are the only points being considered when determinging these weights. As you can see only the local points contribute to the weights, but in the end they can be combined to construct the weights for the entire model.  
+
+![](lowess-rolling.gif)
+
+By building the weights and line of best fit locally, the line of best fit has more freedom to adjust to local changes in the data. This can lead to more accurate predictions as the model can adjust to changes throughout the data more effectively, but can also lead to problems when the data is extremely noisy because the Locally Weighted Regression may start modelling the local noise instead of the actual relationship. 
+
 ### Random Forest
 A Random Forest is just a collection of *n* Decision trees, so to understand how a Random Forest works you must understand how Decision Trees work. 
 
