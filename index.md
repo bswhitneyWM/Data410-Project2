@@ -8,6 +8,9 @@ This page explores the similarities and differences of Locally Weighted Linear R
 
 ### Random Forest
 
+
+## Cars Dataset
+
 ## Data Preprocessing
 Data was split into training and testing sets where the training data consisted of 75% of the observations, and the other 25% were in the test set. The data was then normalized using the training data. Scaling the data is only necessary for the Locally Weighted Regression, because Random Forest performs the same on normalized and unnormalized data as it doesn't calculate the distance between observations. The code for this is shown below. 
 
@@ -63,13 +66,11 @@ print("Best MSE: ", best_mse_rf)
 print("Best Parameters:", best_params_rf)
 ```
 
-This process of splitting the data into trainging and testing sets and scanning for optimal hyperparameters was exectued for both the cars dataset and the Boston housing dataset. The optimal parameters were then used when calculating the crossvalidated mean squared error for each model. 
-
-## Cars Dataset
-
-For both models I performed a 5-fold crossvalidation to obtain the crossvalidated mean squared error. I chose to use 5 folds because there were 392 observations in the car data, leaving roughly 78 observations for each fold. Anything less than this would have been too small a validation sample in my opinion. The code for obtaining each crossvalidated mean squared error are shown in their respective sections below. 
+This process of splitting the data into trainging and testing sets and scanning for optimal hyperparameters was exectued for both the cars dataset and the Boston housing dataset. The optimal parameters were then used when calculating the crossvalidated mean squared error for each model. For both models I performed a 5-fold crossvalidation to obtain the crossvalidated mean squared error. I chose to use 5 folds because there were 392 observations in the car data, leaving roughly 78 observations for each fold. Anything less than this would have been too small a validation sample in my opinion. Random states were utilized to ensure results are reproducible. The code for obtaining each crossvalidated mean squared error are shown in their respective sections below. 
 
 ### Locally Weighted Regression
+When calculating the crossvalidated mse, the data was always normalized before being passed to the 'lowess_reg' function. The model with **tau = 0.1** and the **Epanechnikov kernel** identified earlier was used with every fold. The Locally Weighted Regression produced a **crossvalidated MSE =  18.004**. The code used to obtain this is shown below. 
+
 ```python
 kf = KFold(n_splits=5, random_state=13, shuffle=True)
 
@@ -92,8 +93,8 @@ for train_idx, test_idx in kf.split(x):
 print("Locally Weighted Regression Crossvalidated MSE: ", np.average(scores))
 ```
 
-
 ### Random Forest
+Unnormalized data was used for Random Forest calculations. This is because scaling the data doesn't make a difference, so it is more efficient to use the unnormalized data. The model with **n_estimators = 50** and  **max_depth = 2** identified earlier was used with every fold. The Random Forest Regression produced a **crossvalidated MSE =  18.228**. The code used to obtain this is shown below. 
 
 ```python
 kf = KFold(n_splits=5, random_state=13, shuffle=True)
@@ -112,10 +113,14 @@ for train_idx, test_idx in kf.split(x):
     
 print("Random Forest Crossvalidated MSE: ", np.average(scores))
 ```
-
 ### Conclusion
+As a recap, the Locally Weighted Regression has a crossvalidated MSE = **18.004** while the Random Forest had a crossvalidated MSE = **18.228**. This indicates the **Locally Weighted Regression may be slightly more reliable** when using the cars dataset. This intuition holds when looking at the predictions made by the Locally Weighted regression and Random Forest in the figure below. The Locally Weighted Regression appears less sporadic than Random Forest highlighting that it may be slightly less overfit and better explain the relationship between a cars weight the miles per gallon it achieves. 
+
+![](CarsComparison.png)
 
 ## Boston Housing Dataset
+
+The same exact data preprocessing methods that were used for the cars dataset were used for this Boston Housing dataset. If you need a detailed descripton, please see the `Data Preprocessing` section. For the Locally Weighted Regression, the best model had **tau = 0.3** and a **Epanechnikov kernel**, while the best Random Forest model consisted of **500 trees** with a **max depth of 2**. 
 
 ### Locally Weighted Regression
 
@@ -123,5 +128,7 @@ print("Random Forest Crossvalidated MSE: ", np.average(scores))
 
 ### Conclusion 
 
-## Discussion
+![](HousingComparison.png)
+
+# Final Discussion
 - Maybe Locally weighted regression is more sensitive to noise
